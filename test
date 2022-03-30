@@ -65,7 +65,69 @@ local library = {
 			library.cursor:Remove()
 		end
 	end
-	function library:CreateWindow(name, hidebutton)
+	function library:CreateWindow1(name, hidebutton)
+		local window = { }
+		window.name = name or ""
+		window.size = UDim2.fromOffset(492, 598)
+		window.hidebutton = hidebutton or Enum.KeyCode.RightControl
+		window.theme = library.theme
+		local updateevent = Instance.new("BindableEvent")
+		function window:UpdateTheme(theme)
+			updateevent:Fire(theme or library.theme)
+			window.theme = (theme or library.theme)
+		end
+		window.Main = Instance.new("ScreenGui", coregui)
+		window.Main.Name = name
+		window.Main.DisplayOrder = 15
+		if syn then
+			syn.protect_gui(window.Main)
+		end
+		if getgenv().uilib then
+			getgenv().uilib:Remove()
+		end
+		getgenv().uilib = window.Main
+		local dragging, dragInput, dragStart, startPos
+		uis.InputChanged:Connect(function(input)
+			if input == dragInput and dragging then
+				local delta = input.Position - dragStart
+				window.Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+			end
+		end)
+		local dragstart = function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = true
+				dragStart = input.Position
+				startPos = window.Frame.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragging = false
+					end
+				end)
+			end
+		end
+		local dragend = function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+				dragInput = input
+			end
+		end
+		window.Frame = Instance.new("TextButton", window.Main)
+		window.Frame.Name = "main"
+		window.Frame.Position = UDim2.fromScale(0.5, 0.5)
+		window.Frame.BorderSizePixel = 0
+		window.Frame.Size = window.size
+		window.Frame.AutoButtonColor = false
+		window.Frame.Text = ""
+		window.Frame.BackgroundColor3 = window.theme.backgroundcolor
+		window.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+		updateevent.Event:Connect(function(theme)
+			window.Frame.BackgroundColor3 = theme.backgroundcolor
+		end)
+		uis.InputBegan:Connect(function(key)
+			if key.KeyCode == window.hidebutton then
+				window.Frame.Visible = not window.Frame.Visible
+			end
+		end)
+	function library:CreateWindow2(name, hidebutton)
 		local window = { }
 		window.name = name or ""
 		window.size = UDim2.fromOffset(492, 598)
