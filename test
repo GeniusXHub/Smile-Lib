@@ -757,10 +757,10 @@ local keyHandler = {
 		[Enum.UserInputType.MouseButton3] = true
 	},
 	allowedKeys = {
+		[Enum.KeyCode.LeftControl] = "RCtrl",
+		[Enum.KeyCode.RightControl] = "LCtrl",
 		[Enum.KeyCode.LeftShift] = "LShift",
 		[Enum.KeyCode.RightShift] = "RShift",
-		[Enum.KeyCode.LeftControl] = "LCtrl",
-		[Enum.KeyCode.RightControl] = "RCtrl",
 		[Enum.KeyCode.LeftAlt] = "LAlt",
 		[Enum.KeyCode.RightAlt] = "RAlt",
 		[Enum.KeyCode.CapsLock] = "CAPS",
