@@ -1,4 +1,4 @@
-if game.PlaceId == 6707053754 then
+if game.PlaceId == 6707052754 then
 
 do 
     local ui =  game:GetService("CoreGui"):FindFirstChild("Smile-Lib") 
